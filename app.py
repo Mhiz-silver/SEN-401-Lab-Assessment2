@@ -2,7 +2,9 @@
 app.py
 
 Main program for the Inventory Management System.
-Displays inventory information and calculates stock statistics.
+
+This application displays the inventory, calculates stock
+statistics, and allows users to search for an item.
 """
 
 from inventory import get_inventory
@@ -15,35 +17,43 @@ from utils.helpers import (
     find_item,
 )
 
-items = get_inventory()
 
-print("=" * 50)
-print("          INVENTORY REPORT")
-print("=" * 50)
+def display_inventory(items):
+    """
+    Displays all inventory items in a formatted table.
+    """
 
-print(f"{'Item':<20}{'Qty':>8}{'Price':>12}{'Value':>15}")
-print("-" * 55)
+    print("=" * 50)
+    print("          INVENTORY REPORT")
+    print("=" * 50)
 
-for item in items:
-    value = item["quantity"] * item["price"]
+    print(f"{'Item':<20}{'Qty':>8}{'Price':>12}{'Value':>15}")
+    print("-" * 55)
 
-    print(
-        f"{item['item_name']:<20}"
-        f"{item['quantity']:>8}"
-        f"{item['price']:>12,}"
-        f"{value:>15,}"
-    )
+    for item in items:
+        stock_value = item["quantity"] * item["price"]
 
-print()
+        print(
+            f"{item['item_name']:<20}"
+            f"{item['quantity']:>8}"
+            f"{item['price']:>12,}"
+            f"{stock_value:>15,}"
+        )
 
-try:
+
+def display_summary(items):
+    """
+    Displays inventory statistics.
+    """
+
     highest = highest_stock_item(items)
     lowest = lowest_stock_item(items)
     total = total_stock_value(items)
 
-    quantity = total_quantity(items)
-    average = average_price(items)
+    total_quantity_value = total_quantity(items)
+    average_price_value = average_price(items)
 
+    print()
     print("=" * 50)
     print("SUMMARY")
     print("=" * 50)
@@ -61,9 +71,15 @@ try:
     )
 
     print(f"Total Stock Value   : ₦{total:,}")
-    print(f"Total Quantity      : {quantity}")
-    print(f"Average Item Price  : ₦{average:,.2f}")
+    print(f"Total Quantity      : {total_quantity_value}")
+    print(f"Average Item Price  : ₦{average_price_value:,.2f}")
     print(f"Number of Products  : {len(items)}")
+
+
+def search_inventory(items):
+    """
+    Searches for an inventory item entered by the user.
+    """
 
     print()
     print("=" * 50)
@@ -79,5 +95,23 @@ try:
     print(f"Quantity  : {item['quantity']}")
     print(f"Price     : ₦{item['price']:,}")
 
-except ValueError as error:
-    print(error)
+
+def main():
+    """
+    Main function that controls program execution.
+    """
+
+    items = get_inventory()
+
+    display_inventory(items)
+
+    try:
+        display_summary(items)
+        search_inventory(items)
+
+    except ValueError as error:
+        print(error)
+
+
+if __name__ == "__main__":
+    main()
