@@ -10,6 +10,7 @@ from utils.helpers import (
     highest_stock_item,
     lowest_stock_item,
     total_stock_value,
+    find_item,
 )
 
 items = get_inventory()
@@ -18,17 +19,17 @@ print("=" * 50)
 print("          INVENTORY REPORT")
 print("=" * 50)
 
-print(f"{'Item':<15}{'Qty':>8}{'Price':>12}{'Value':>15}")
-print("-" * 50)
+print(f"{'Item':<20}{'Qty':>8}{'Price':>12}{'Value':>15}")
+print("-" * 55)
 
 for item in items:
     value = item["quantity"] * item["price"]
 
     print(
-        f"{item['item_name']:<15}"
+        f"{item['item_name']:<20}"
         f"{item['quantity']:>8}"
-        f"{item['price']:>12}"
-        f"{value:>15}"
+        f"{item['price']:>12,}"
+        f"{value:>15,}"
     )
 
 print()
@@ -43,16 +44,32 @@ try:
     print("=" * 50)
 
     print(
-        f"Highest Stock Value : {highest['item_name']} "
+        f"Highest Stock Value : "
+        f"{highest['item_name']} "
         f"(₦{highest['quantity'] * highest['price']:,})"
     )
 
     print(
-        f"Lowest Stock Value  : {lowest['item_name']} "
+        f"Lowest Stock Value  : "
+        f"{lowest['item_name']} "
         f"(₦{lowest['quantity'] * lowest['price']:,})"
     )
 
     print(f"Total Stock Value   : ₦{total:,}")
+
+    print()
+    print("=" * 50)
+    print("SEARCH INVENTORY")
+    print("=" * 50)
+
+    item_name = input("Enter item name: ")
+
+    item = find_item(items, item_name)
+
+    print("\nItem Found")
+    print(f"Item Name : {item['item_name']}")
+    print(f"Quantity  : {item['quantity']}")
+    print(f"Price     : ₦{item['price']:,}")
 
 except ValueError as error:
     print(error)

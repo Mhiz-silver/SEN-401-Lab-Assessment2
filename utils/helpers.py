@@ -76,3 +76,25 @@ def lowest_stock_item(items):
             lowest = item
 
     return lowest
+
+
+def find_item(items, item_name):
+    """
+    Searches for an item in the inventory by name.
+
+    Args:
+        items (list): The inventory list.
+        item_name (str): Name of the item to search for.
+
+    Returns:
+        dict: The matching inventory item.
+
+    Raises:
+        ValueError: If the item cannot be found.
+    """
+
+    for item in items:
+        if item["item_name"].lower() == item_name.lower():
+            return item
+
+    raise ValueError(f"{item_name} was not found in the inventory.")
