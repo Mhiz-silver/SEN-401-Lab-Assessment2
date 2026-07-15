@@ -10,6 +10,8 @@ from utils.helpers import (
     highest_stock_item,
     lowest_stock_item,
     total_stock_value,
+    total_quantity,
+    average_price,
     find_item,
 )
 
@@ -39,6 +41,9 @@ try:
     lowest = lowest_stock_item(items)
     total = total_stock_value(items)
 
+    quantity = total_quantity(items)
+    average = average_price(items)
+
     print("=" * 50)
     print("SUMMARY")
     print("=" * 50)
@@ -56,6 +61,9 @@ try:
     )
 
     print(f"Total Stock Value   : ₦{total:,}")
+    print(f"Total Quantity      : {quantity}")
+    print(f"Average Item Price  : ₦{average:,.2f}")
+    print(f"Number of Products  : {len(items)}")
 
     print()
     print("=" * 50)

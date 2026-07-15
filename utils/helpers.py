@@ -98,3 +98,35 @@ def find_item(items, item_name):
             return item
 
     raise ValueError(f"{item_name} was not found in the inventory.")
+
+
+def total_quantity(items):
+    """
+    Returns the total quantity of all inventory items.
+    """
+
+    if not items:
+        raise ValueError("Inventory is empty.")
+
+    total = 0
+
+    for item in items:
+        total += item["quantity"]
+
+    return total
+
+
+def average_price(items):
+    """
+    Returns the average price of all inventory items.
+    """
+
+    if not items:
+        raise ValueError("Inventory is empty.")
+
+    total = 0
+
+    for item in items:
+        total += item["price"]
+
+    return total / len(items)
