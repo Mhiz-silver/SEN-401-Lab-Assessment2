@@ -1,8 +1,8 @@
 """
 inventory.py
 
-Stores inventory data and provides a function
-to retrieve the inventory items.
+Stores inventory items and provides
+a function to retrieve the inventory.
 """
 
 ITEMS = [
@@ -15,5 +15,14 @@ ITEMS = [
 
 
 def get_inventory():
-    """Returns a copy of the inventory list."""
+    """
+    Returns a copy of the inventory list.
+
+    Raises:
+        ValueError: If the inventory list is empty.
+    """
+
+    if not ITEMS:
+        raise ValueError("Inventory is empty.")
+
     return ITEMS.copy()
