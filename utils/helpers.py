@@ -1,132 +1,80 @@
 """
 helpers.py
 
-This module contains helper functions for
-inventory calculations.
+Contains helper functions for inventory calculations.
 """
 
+from models import InventoryItem
 
-def total_stock_value(items):
+
+def validate_inventory(items: list[InventoryItem]) -> None:
     """
-    Calculates the total value of all inventory items.
-
-    Raises:
-        ValueError: If the inventory is empty or contains
-        invalid quantity or price values.
+    Validates that the inventory is not empty.
     """
 
     if not items:
         raise ValueError("Inventory is empty.")
 
-    total = 0
 
-    for item in items:
-        if item["quantity"] < 0:
-            raise ValueError(f"Invalid quantity for {item['item_name']}.")
+def total_stock_value(items: list[InventoryItem]) -> float:
+    """
+    Calculates the total stock value.
+    """
 
-        if item["price"] < 0:
-            raise ValueError(f"Invalid price for {item['item_name']}.")
+    validate_inventory(items)
 
-        total += item["quantity"] * item["price"]
-
-    return total
+    return sum(item.stock_value for item in items)
 
 
-def highest_stock_item(items):
+def highest_stock_item(items: list[InventoryItem]) -> InventoryItem:
     """
     Returns the item with the highest stock value.
     """
 
-    if not items:
-        raise ValueError("Inventory is empty.")
+    validate_inventory(items)
 
-    highest = items[0]
-
-    for item in items:
-        if item["quantity"] < 0 or item["price"] < 0:
-            raise ValueError(f"Invalid data for {item['item_name']}.")
-
-        highest_value = highest["quantity"] * highest["price"]
-        current_value = item["quantity"] * item["price"]
-
-        if current_value > highest_value:
-            highest = item
-
-    return highest
+    return max(items, key=lambda item: item.stock_value)
 
 
-def lowest_stock_item(items):
+def lowest_stock_item(items: list[InventoryItem]) -> InventoryItem:
     """
     Returns the item with the lowest stock value.
     """
 
-    if not items:
-        raise ValueError("Inventory is empty.")
+    validate_inventory(items)
 
-    lowest = items[0]
-
-    for item in items:
-        if item["quantity"] < 0 or item["price"] < 0:
-            raise ValueError(f"Invalid data for {item['item_name']}.")
-
-        lowest_value = lowest["quantity"] * lowest["price"]
-        current_value = item["quantity"] * item["price"]
-
-        if current_value < lowest_value:
-            lowest = item
-
-    return lowest
+    return min(items, key=lambda item: item.stock_value)
 
 
-def find_item(items, item_name):
+def total_quantity(items: list[InventoryItem]) -> int:
     """
-    Searches for an item in the inventory by name.
-
-    Args:
-        items (list): The inventory list.
-        item_name (str): Name of the item to search for.
-
-    Returns:
-        dict: The matching inventory item.
-
-    Raises:
-        ValueError: If the item cannot be found.
+    Calculates the total quantity.
     """
 
+    validate_inventory(items)
+
+    return sum(item.quantity for item in items)
+
+
+def average_price(items: list[InventoryItem]) -> float:
+    """
+    Calculates the average item price.
+    """
+
+    validate_inventory(items)
+
+    return sum(item.price for item in items) / len(items)
+
+
+def find_item(items: list[InventoryItem], name: str) -> InventoryItem:
+    """
+    Searches for an inventory item by name.
+    """
+
+    validate_inventory(items)
+
     for item in items:
-        if item["item_name"].lower() == item_name.lower():
+        if item.item_name.lower() == name.lower():
             return item
 
-    raise ValueError(f"{item_name} was not found in the inventory.")
-
-
-def total_quantity(items):
-    """
-    Returns the total quantity of all inventory items.
-    """
-
-    if not items:
-        raise ValueError("Inventory is empty.")
-
-    total = 0
-
-    for item in items:
-        total += item["quantity"]
-
-    return total
-
-
-def average_price(items):
-    """
-    Returns the average price of all inventory items.
-    """
-
-    if not items:
-        raise ValueError("Inventory is empty.")
-
-    total = 0
-
-    for item in items:
-        total += item["price"]
-
-    return total / len(items)
+    raise ValueError(f"{name} was not found in the inventory.")
