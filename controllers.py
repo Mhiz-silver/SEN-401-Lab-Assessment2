@@ -4,7 +4,7 @@ controllers.py
 Contains functions that control the application workflow.
 """
 
-from inventory import get_inventory
+from database import get_inventory
 from utils.helpers import (
     highest_stock_item,
     lowest_stock_item,
